@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Archetype-Explained Audit — LAIV Edge</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background:#020617; color:#e2e8f0; margin:0; padding:24px; }
+  h1 { color:#fff; font-size:24px; }
+  h2 { color:#fff; font-size:18px; margin-top:32px; padding-bottom:6px; border-bottom:1px solid #1e293b; }
+  h3 { color:#cbd5e1; font-size:14px; text-transform:uppercase; letter-spacing:0.05em; margin:18px 0 8px; }
+  .muted { color:#64748b; font-size:13px; }
+  .block { background:#0f172a; padding:16px; border-radius:8px; margin-bottom:16px; border:1px solid #1e293b; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th { text-align:left; padding:8px 10px; color:#64748b; font-weight:500; border-bottom:1px solid #1e293b; font-size:11px; text-transform:uppercase; }
+  td { padding:6px 10px; border-bottom:1px solid #1e293b; vertical-align:top; }
+  tbody tr:hover { background:#1e293b; }
+  .tier-high { color:#34d399; font-weight:600; }
+  .tier-mid { color:#fbbf24; }
+  .tier-low { color:#94a3b8; }
+  .residual-pos { color:#34d399; }
+  .residual-neg { color:#f87171; }
+  .residual-flat { color:#94a3b8; }
+  .header { background:linear-gradient(135deg, #1e3a8a 0%, #0c1e3a 100%); padding:24px; border-radius:8px; margin-bottom:24px; }
+</style></head><body>
+
+<div class="header">
+  <h1>🔬 Archetype-Explained Audit — LAIV Edge</h1>
+  <div class="muted">For each pitcher, what fraction of their record is explained by opp-team archetype matchup vs pitcher-specific signal vs noise?</div>
+  <div class="muted">Per Lofa's 2026-05-31 framework: distinguish causal signal (repeatable) from small-sample mirage.</div>
+  <div class="muted">Generated: 2026-05-31 16:52</div>
+</div>
+
+<div class="block">
+  <h3>How to read this</h3>
+  <p style="font-size:13px; line-height:1.5;">
+    <b>Expected WR</b> = average WR of all V2 picks against opponents of the same archetype, for this market+side. (Uses ≥5-pick baselines.)<br>
+    <b>Residual</b> = Actual WR − Expected WR.
+    <span style="color:#94a3b8">Near zero = archetype-explained (real, repeatable).</span>
+    <span style="color:#34d399">Positive = pitcher-specific upside</span> — if N is high, this is real edge; if N is low, likely noise.<br>
+    <span style="color:#f87171">Negative = pitcher-specific downside</span> — same caveat about N.<br>
+    <b>Trust tier</b> follows Lofa's framework: 1-2 exploratory, 3-4 moderate, 5-7 strong, 8+ highly trusted.
+  </p>
+</div>
+
+<h2>Pitchers ranked by (sample weight × WR)</h2>
+<div class="block">
+<table>
+<thead><tr>
+  <th>Pitcher</th><th>W-L</th><th>Actual WR</th><th>Archetype Expected</th>
+  <th>Residual</th><th>Trust Tier</th><th>P/L</th>
+</tr></thead><tbody>
+
+<tr>
+  <td><b>Carmen Mlodzinski</b></td>
+  <td>8-0</td>
+  <td>100.0%</td>
+  <td>69.8%</td>
+  <td class="residual-pos">+30.2pp</td>
+  <td class="tier-high">Strong-plus (8-9)</td>
+  <td>$+669</td>
+</tr>
+<tr>
+  <td><b>Mitch Keller</b></td>
+  <td>6-0</td>
+  <td>100.0%</td>
+  <td>64.5%</td>
+  <td class="residual-pos">+35.5pp</td>
+  <td class="tier-mid">Strong (5-7)</td>
+  <td>$+389</td>
+</tr>
+<tr>
+  <td><b>Sean Burke</b></td>
+  <td>6-0</td>
+  <td>100.0%</td>
+  <td>67.3%</td>
+  <td class="residual-pos">+32.7pp</td>
+  <td class="tier-mid">Strong (5-7)</td>
+  <td>$+422</td>
+</tr>
+<tr>
+  <td><b>Bubba Chandler</b></td>
+  <td>5-0</td>
+  <td>100.0%</td>
+  <td>71.3%</td>
+  <td class="residual-pos">+28.7pp</td>
+  <td class="tier-mid">Strong (5-7)</td>
+  <td>$+413</td>
+</tr>
+<tr>
+  <td><b>Kyle Freeland</b></td>
+  <td>6-1</td>
+  <td>85.7%</td>
+  <td>69.4%</td>
+  <td class="residual-pos">+16.3pp</td>
+  <td class="tier-mid">Strong (5-7)</td>
+  <td>$+378</td>
+</tr>
+<tr>
+  <td><b>Drew Rasmussen</b></td>
+  <td>5-1</td>
+  <td>83.3%</td>
+  <td>58.9%</td>
+  <td class="residual-pos">+24.4pp</td>
+  <td class="tier-mid">Strong (5-7)</td>
+  <td>$+236</td>
+</tr>
+<tr>
+  <td><b>Spencer Arrighetti</b></td>
+  <td>4-1</td>
+  <td>80.0%</td>
+  <td>70.7%</td>
+  <td class="residual-flat">+9.3pp</td>
+  <td class="tier-mid">Strong (5-7)</td>
+  <td>$+184</td>
+</tr>
+<tr>
+  <td><b>Michael King</b></td>
+  <td>5-3</td>
+  <td>62.5%</td>
+  <td>69.3%</td>
+  <td class="residual-flat">-6.8pp</td>
+  <td class="tier-high">Strong-plus (8-9)</td>
+  <td>$+131</td>
+</tr>
+<tr>
+  <td><b>Andrew Abbott</b></td>
+  <td>4-2</td>
+  <td>66.7%</td>
+  <td>63.0%</td>
+  <td class="residual-flat">+3.6pp</td>
+  <td class="tier-mid">Strong (5-7)</td>
+  <td>$+76</td>
+</tr>
+<tr>
+  <td><b>Braxton Ashcraft</b></td>
+  <td>4-2</td>
+  <td>66.7%</td>
+  <td>70.9%</td>
+  <td class="residual-flat">-4.2pp</td>
+  <td class="tier-mid">Strong (5-7)</td>
+  <td>$+182</td>
+</tr>
+<tr>
+  <td><b>J.T. Ginn</b></td>
+  <td>4-4</td>
+  <td>50.0%</td>
+  <td>66.7%</td>
+  <td class="residual-neg">-16.7pp</td>
+  <td class="tier-high">Strong-plus (8-9)</td>
+  <td>$-103</td>
+</tr>
+<tr>
+  <td><b>Parker Messick</b></td>
+  <td>3-2</td>
+  <td>60.0%</td>
+  <td>65.1%</td>
+  <td class="residual-flat">-5.1pp</td>
+  <td class="tier-mid">Strong (5-7)</td>
+  <td>$+22</td>
+</tr>
+<tr>
+  <td><b>Nolan McLean</b></td>
+  <td>3-2</td>
+  <td>60.0%</td>
+  <td>58.0%</td>
+  <td class="residual-flat">+2.0pp</td>
+  <td class="tier-mid">Strong (5-7)</td>
+  <td>$+114</td>
+</tr>
+<tr>
+  <td><b>JosÃ© Soriano</b></td>
+  <td>3-2</td>
+  <td>60.0%</td>
+  <td>61.8%</td>
+  <td class="residual-flat">-1.8pp</td>
+  <td class="tier-mid">Strong (5-7)</td>
+  <td>$+85</td>
+</tr>
+<tr>
+  <td><b>Jack Leiter</b></td>
+  <td>3-2</td>
+  <td>60.0%</td>
+  <td>62.9%</td>
+  <td class="residual-flat">-2.9pp</td>
+  <td class="tier-mid">Strong (5-7)</td>
+  <td>$+49</td>
+</tr>
+<tr>
+  <td><b>Merrill Kelly</b></td>
+  <td>3-2</td>
+  <td>60.0%</td>
+  <td>71.0%</td>
+  <td class="residual-neg">-11.0pp</td>
+  <td class="tier-mid">Strong (5-7)</td>
+  <td>$+42</td>
+</tr>
+<tr>
+  <td><b>Anthony Kay</b></td>
+  <td>4-0</td>
+  <td>100.0%</td>
+  <td>69.7%</td>
+  <td class="residual-pos">+30.3pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+284</td>
+</tr>
+<tr>
+  <td><b>Framber Valdez</b></td>
+  <td>3-0</td>
+  <td>100.0%</td>
+  <td>76.3%</td>
+  <td class="residual-pos">+23.7pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+244</td>
+</tr>
+<tr>
+  <td><b>Grant Holmes</b></td>
+  <td>4-0</td>
+  <td>100.0%</td>
+  <td>68.7%</td>
+  <td class="residual-pos">+31.3pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+371</td>
+</tr>
+<tr>
+  <td><b>Shota Imanaga</b></td>
+  <td>3-0</td>
+  <td>100.0%</td>
+  <td>64.6%</td>
+  <td class="residual-pos">+35.4pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+279</td>
+</tr>
+<tr>
+  <td><b>Joey Cantillo</b></td>
+  <td>3-0</td>
+  <td>100.0%</td>
+  <td>66.6%</td>
+  <td class="residual-pos">+33.4pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+190</td>
+</tr>
+<tr>
+  <td><b>Emerson Hancock</b></td>
+  <td>4-0</td>
+  <td>100.0%</td>
+  <td>60.4%</td>
+  <td class="residual-pos">+39.6pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+324</td>
+</tr>
+<tr>
+  <td><b>Jameson Taillon</b></td>
+  <td>3-0</td>
+  <td>100.0%</td>
+  <td>66.8%</td>
+  <td class="residual-pos">+33.2pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+259</td>
+</tr>
+<tr>
+  <td><b>Sandy Alcantara</b></td>
+  <td>3-0</td>
+  <td>100.0%</td>
+  <td>69.9%</td>
+  <td class="residual-pos">+30.1pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+190</td>
+</tr>
+<tr>
+  <td><b>Randy VÃ¡squez</b></td>
+  <td>3-0</td>
+  <td>100.0%</td>
+  <td>64.8%</td>
+  <td class="residual-pos">+35.2pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+232</td>
+</tr>
+<tr>
+  <td><b>Luis Severino</b></td>
+  <td>3-0</td>
+  <td>100.0%</td>
+  <td>63.2%</td>
+  <td class="residual-pos">+36.8pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+258</td>
+</tr>
+<tr>
+  <td><b>Cristopher SÃ¡nchez</b></td>
+  <td>3-0</td>
+  <td>100.0%</td>
+  <td>71.0%</td>
+  <td class="residual-pos">+29.0pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+249</td>
+</tr>
+<tr>
+  <td><b>Patrick Corbin</b></td>
+  <td>3-0</td>
+  <td>100.0%</td>
+  <td>73.8%</td>
+  <td class="residual-pos">+26.2pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+229</td>
+</tr>
+<tr>
+  <td><b>Eric Lauer</b></td>
+  <td>3-0</td>
+  <td>100.0%</td>
+  <td>72.1%</td>
+  <td class="residual-pos">+27.9pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+313</td>
+</tr>
+<tr>
+  <td><b>Justin Wrobleski</b></td>
+  <td>3-3</td>
+  <td>50.0%</td>
+  <td>65.3%</td>
+  <td class="residual-neg">-15.3pp</td>
+  <td class="tier-mid">Strong (5-7)</td>
+  <td>$-78</td>
+</tr>
+<tr>
+  <td><b>Erick Fedde</b></td>
+  <td>3-1</td>
+  <td>75.0%</td>
+  <td>60.0%</td>
+  <td class="residual-pos">+15.0pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+120</td>
+</tr>
+<tr>
+  <td><b>Reid Detmers</b></td>
+  <td>3-1</td>
+  <td>75.0%</td>
+  <td>64.0%</td>
+  <td class="residual-pos">+11.0pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+156</td>
+</tr>
+<tr>
+  <td><b>Chris Paddack</b></td>
+  <td>3-1</td>
+  <td>75.0%</td>
+  <td>76.8%</td>
+  <td class="residual-flat">-1.8pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+171</td>
+</tr>
+<tr>
+  <td><b>Logan Gilbert</b></td>
+  <td>3-1</td>
+  <td>75.0%</td>
+  <td>66.2%</td>
+  <td class="residual-flat">+8.8pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+160</td>
+</tr>
+<tr>
+  <td><b>Logan Webb</b></td>
+  <td>3-1</td>
+  <td>75.0%</td>
+  <td>62.3%</td>
+  <td class="residual-pos">+12.7pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+129</td>
+</tr>
+<tr>
+  <td><b>Robbie Ray</b></td>
+  <td>2-3</td>
+  <td>40.0%</td>
+  <td>64.9%</td>
+  <td class="residual-neg">-24.9pp</td>
+  <td class="tier-mid">Strong (5-7)</td>
+  <td>$-135</td>
+</tr>
+<tr>
+  <td><b>Davis Martin</b></td>
+  <td>2-1</td>
+  <td>66.7%</td>
+  <td>56.0%</td>
+  <td class="residual-pos">+10.7pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+51</td>
+</tr>
+<tr>
+  <td><b>Jack Kochanowicz</b></td>
+  <td>2-1</td>
+  <td>66.7%</td>
+  <td>54.8%</td>
+  <td class="residual-pos">+11.9pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+45</td>
+</tr>
+<tr>
+  <td><b>Edward Cabrera</b></td>
+  <td>2-1</td>
+  <td>66.7%</td>
+  <td>70.3%</td>
+  <td class="residual-flat">-3.6pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+79</td>
+</tr>
+<tr>
+  <td><b>Jacob Lopez</b></td>
+  <td>2-1</td>
+  <td>66.7%</td>
+  <td>61.3%</td>
+  <td class="residual-flat">+5.4pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+89</td>
+</tr>
+<tr>
+  <td><b>Adrian Houser</b></td>
+  <td>2-1</td>
+  <td>66.7%</td>
+  <td>63.6%</td>
+  <td class="residual-flat">+3.1pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$-19</td>
+</tr>
+<tr>
+  <td><b>Aaron Civale</b></td>
+  <td>2-1</td>
+  <td>66.7%</td>
+  <td>63.3%</td>
+  <td class="residual-flat">+3.4pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+45</td>
+</tr>
+<tr>
+  <td><b>Jack Flaherty</b></td>
+  <td>2-1</td>
+  <td>66.7%</td>
+  <td>60.2%</td>
+  <td class="residual-flat">+6.5pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+136</td>
+</tr>
+<tr>
+  <td><b>Freddy Peralta</b></td>
+  <td>2-1</td>
+  <td>66.7%</td>
+  <td>67.1%</td>
+  <td class="residual-flat">-0.4pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+64</td>
+</tr>
+<tr>
+  <td><b>Garrett Crochet</b></td>
+  <td>2-1</td>
+  <td>66.7%</td>
+  <td>66.1%</td>
+  <td class="residual-flat">+0.6pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+82</td>
+</tr>
+<tr>
+  <td><b>Roki Sasaki</b></td>
+  <td>2-2</td>
+  <td>50.0%</td>
+  <td>68.5%</td>
+  <td class="residual-neg">-18.5pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$-38</td>
+</tr>
+<tr>
+  <td><b>Jesús Luzardo</b></td>
+  <td>2-0</td>
+  <td>100.0%</td>
+  <td>65.7%</td>
+  <td class="residual-pos">+34.3pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$+162</td>
+</tr>
+<tr>
+  <td><b>Zac Gallen</b></td>
+  <td>2-0</td>
+  <td>100.0%</td>
+  <td>57.4%</td>
+  <td class="residual-pos">+42.6pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$+170</td>
+</tr>
+<tr>
+  <td><b>Zack Wheeler</b></td>
+  <td>2-0</td>
+  <td>100.0%</td>
+  <td>74.2%</td>
+  <td class="residual-pos">+25.8pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$+182</td>
+</tr>
+<tr>
+  <td><b>Simeon Woods Richardson</b></td>
+  <td>2-2</td>
+  <td>50.0%</td>
+  <td>71.3%</td>
+  <td class="residual-neg">-21.3pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$-46</td>
+</tr>
+<tr>
+  <td><b>Jacob deGrom</b></td>
+  <td>2-2</td>
+  <td>50.0%</td>
+  <td>68.6%</td>
+  <td class="residual-neg">-18.6pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$-34</td>
+</tr>
+<tr>
+  <td><b>Michael Soroka</b></td>
+  <td>2-2</td>
+  <td>50.0%</td>
+  <td>80.2%</td>
+  <td class="residual-neg">-30.2pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$-49</td>
+</tr>
+<tr>
+  <td><b>Walker Buehler</b></td>
+  <td>2-2</td>
+  <td>50.0%</td>
+  <td>66.0%</td>
+  <td class="residual-neg">-16.0pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$-71</td>
+</tr>
+<tr>
+  <td><b>Steven Matz</b></td>
+  <td>2-0</td>
+  <td>100.0%</td>
+  <td>72.7%</td>
+  <td class="residual-pos">+27.3pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$+184</td>
+</tr>
+<tr>
+  <td><b>Christian Scott</b></td>
+  <td>2-2</td>
+  <td>50.0%</td>
+  <td>60.6%</td>
+  <td class="residual-neg">-10.6pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$-25</td>
+</tr>
+<tr>
+  <td><b>Sonny Gray</b></td>
+  <td>2-0</td>
+  <td>100.0%</td>
+  <td>78.5%</td>
+  <td class="residual-pos">+21.5pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$+140</td>
+</tr>
+<tr>
+  <td><b>Ranger Suarez</b></td>
+  <td>2-0</td>
+  <td>100.0%</td>
+  <td>73.9%</td>
+  <td class="residual-pos">+26.1pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$+134</td>
+</tr>
+<tr>
+  <td><b>Will Warren</b></td>
+  <td>2-2</td>
+  <td>50.0%</td>
+  <td>56.3%</td>
+  <td class="residual-flat">-6.3pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$-33</td>
+</tr>
+<tr>
+  <td><b>Trevor Rogers</b></td>
+  <td>2-0</td>
+  <td>100.0%</td>
+  <td>73.6%</td>
+  <td class="residual-pos">+26.4pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$+172</td>
+</tr>
+<tr>
+  <td><b>Kyle Harrison</b></td>
+  <td>2-2</td>
+  <td>50.0%</td>
+  <td>58.1%</td>
+  <td class="residual-flat">-8.1pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+14</td>
+</tr>
+<tr>
+  <td><b>Max Fried</b></td>
+  <td>2-0</td>
+  <td>100.0%</td>
+  <td>72.4%</td>
+  <td class="residual-pos">+27.6pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$+171</td>
+</tr>
+<tr>
+  <td><b>Matthew Liberatore</b></td>
+  <td>2-2</td>
+  <td>50.0%</td>
+  <td>70.9%</td>
+  <td class="residual-neg">-20.9pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$-52</td>
+</tr>
+<tr>
+  <td><b>Shohei Ohtani</b></td>
+  <td>2-0</td>
+  <td>100.0%</td>
+  <td>68.9%</td>
+  <td class="residual-pos">+31.1pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$+151</td>
+</tr>
+<tr>
+  <td><b>Tomoyuki Sugano</b></td>
+  <td>2-0</td>
+  <td>100.0%</td>
+  <td>92.3%</td>
+  <td class="residual-flat">+7.7pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$+154</td>
+</tr>
+<tr>
+  <td><b>Mike Burrows</b></td>
+  <td>2-2</td>
+  <td>50.0%</td>
+  <td>61.4%</td>
+  <td class="residual-neg">-11.4pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$+36</td>
+</tr>
+<tr>
+  <td><b>Jeffrey Springs</b></td>
+  <td>2-0</td>
+  <td>100.0%</td>
+  <td>63.7%</td>
+  <td class="residual-pos">+36.3pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$+187</td>
+</tr>
+<tr>
+  <td><b>Michael Lorenzen</b></td>
+  <td>2-0</td>
+  <td>100.0%</td>
+  <td>67.3%</td>
+  <td class="residual-pos">+32.7pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$+137</td>
+</tr>
+<tr>
+  <td><b>Cade Cavalli</b></td>
+  <td>2-2</td>
+  <td>50.0%</td>
+  <td>60.3%</td>
+  <td class="residual-neg">-10.3pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$-36</td>
+</tr>
+<tr>
+  <td><b>Chad Patrick</b></td>
+  <td>2-0</td>
+  <td>100.0%</td>
+  <td>77.7%</td>
+  <td class="residual-pos">+22.3pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$+142</td>
+</tr>
+<tr>
+  <td><b>Keider Montero</b></td>
+  <td>2-0</td>
+  <td>100.0%</td>
+  <td>59.9%</td>
+  <td class="residual-pos">+40.1pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$+151</td>
+</tr>
+<tr>
+  <td><b>GermÃ¡n MÃ¡rquez</b></td>
+  <td>2-0</td>
+  <td>100.0%</td>
+  <td>68.7%</td>
+  <td class="residual-pos">+31.3pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$+190</td>
+</tr>
+<tr>
+  <td><b>Matthew Boyd</b></td>
+  <td>2-0</td>
+  <td>100.0%</td>
+  <td>67.9%</td>
+  <td class="residual-pos">+32.1pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$+151</td>
+</tr>
+<tr>
+  <td><b>Rhett Lowder</b></td>
+  <td>2-0</td>
+  <td>100.0%</td>
+  <td>65.2%</td>
+  <td class="residual-pos">+34.8pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$+139</td>
+</tr>
+<tr>
+  <td><b>Taj Bradley</b></td>
+  <td>2-0</td>
+  <td>100.0%</td>
+  <td>54.8%</td>
+  <td class="residual-pos">+45.2pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$+143</td>
+</tr>
+<tr>
+  <td><b>Peter Lambert</b></td>
+  <td>1-4</td>
+  <td>20.0%</td>
+  <td>65.4%</td>
+  <td class="residual-neg">-45.4pp</td>
+  <td class="tier-mid">Strong (5-7)</td>
+  <td>$-333</td>
+</tr>
+<tr>
+  <td><b>Janson Junk</b></td>
+  <td>1-4</td>
+  <td>20.0%</td>
+  <td>60.8%</td>
+  <td class="residual-neg">-40.8pp</td>
+  <td class="tier-mid">Strong (5-7)</td>
+  <td>$-355</td>
+</tr>
+<tr>
+  <td><b>Joe Ryan</b></td>
+  <td>1-2</td>
+  <td>33.3%</td>
+  <td>61.6%</td>
+  <td class="residual-neg">-28.3pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$-105</td>
+</tr>
+<tr>
+  <td><b>Nick Martinez</b></td>
+  <td>1-2</td>
+  <td>33.3%</td>
+  <td>61.4%</td>
+  <td class="residual-neg">-28.1pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$-118</td>
+</tr>
+<tr>
+  <td><b>Kumar Rocker</b></td>
+  <td>1-2</td>
+  <td>33.3%</td>
+  <td>65.9%</td>
+  <td class="residual-neg">-32.6pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$-146</td>
+</tr>
+<tr>
+  <td><b>Tyler Mahle</b></td>
+  <td>1-5</td>
+  <td>16.7%</td>
+  <td>65.0%</td>
+  <td class="residual-neg">-48.3pp</td>
+  <td class="tier-mid">Strong (5-7)</td>
+  <td>$-434</td>
+</tr>
+<tr>
+  <td><b>Ryne Nelson</b></td>
+  <td>1-1</td>
+  <td>50.0%</td>
+  <td>57.2%</td>
+  <td class="residual-flat">-7.2pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$-9</td>
+</tr>
+<tr>
+  <td><b>Brandon Sproat</b></td>
+  <td>1-1</td>
+  <td>50.0%</td>
+  <td>64.9%</td>
+  <td class="residual-neg">-14.9pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$-5</td>
+</tr>
+<tr>
+  <td><b>Nathan Eovaldi</b></td>
+  <td>1-1</td>
+  <td>50.0%</td>
+  <td>60.0%</td>
+  <td class="residual-neg">-10.0pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$-25</td>
+</tr>
+<tr>
+  <td><b>Chase Burns</b></td>
+  <td>1-1</td>
+  <td>50.0%</td>
+  <td>67.3%</td>
+  <td class="residual-neg">-17.3pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$-52</td>
+</tr>
+<tr>
+  <td><b>Bryan Woo</b></td>
+  <td>1-3</td>
+  <td>25.0%</td>
+  <td>61.8%</td>
+  <td class="residual-neg">-36.8pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$-230</td>
+</tr>
+<tr>
+  <td><b>Slade Cecconi</b></td>
+  <td>1-1</td>
+  <td>50.0%</td>
+  <td>70.6%</td>
+  <td class="residual-neg">-20.6pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$-33</td>
+</tr>
+<tr>
+  <td><b>JesÃºs Luzardo</b></td>
+  <td>1-1</td>
+  <td>50.0%</td>
+  <td>68.7%</td>
+  <td class="residual-neg">-18.7pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$-9</td>
+</tr>
+<tr>
+  <td><b>Kyle Bradish</b></td>
+  <td>1-1</td>
+  <td>50.0%</td>
+  <td>78.4%</td>
+  <td class="residual-neg">-28.4pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$-33</td>
+</tr>
+<tr>
+  <td><b>Lance McCullers Jr.</b></td>
+  <td>1-1</td>
+  <td>50.0%</td>
+  <td>65.5%</td>
+  <td class="residual-neg">-15.5pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$-5</td>
+</tr>
+<tr>
+  <td><b>Ryan Weathers</b></td>
+  <td>1-3</td>
+  <td>25.0%</td>
+  <td>67.5%</td>
+  <td class="residual-neg">-42.5pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$-226</td>
+</tr>
+<tr>
+  <td><b>Jose Quintana</b></td>
+  <td>1-1</td>
+  <td>50.0%</td>
+  <td>87.5%</td>
+  <td class="residual-neg">-37.5pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$-33</td>
+</tr>
+<tr>
+  <td><b>MartÃ­n PÃ©rez</b></td>
+  <td>1-1</td>
+  <td>50.0%</td>
+  <td>64.7%</td>
+  <td class="residual-neg">-14.7pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$+0</td>
+</tr>
+<tr>
+  <td><b>Stephen Kolek</b></td>
+  <td>1-1</td>
+  <td>50.0%</td>
+  <td>82.2%</td>
+  <td class="residual-neg">-32.2pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$-32</td>
+</tr>
+<tr>
+  <td><b>Yusei Kikuchi</b></td>
+  <td>1-1</td>
+  <td>50.0%</td>
+  <td>67.9%</td>
+  <td class="residual-neg">-17.9pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$+0</td>
+</tr>
+<tr>
+  <td><b>Brandon Williamson</b></td>
+  <td>1-1</td>
+  <td>50.0%</td>
+  <td>72.6%</td>
+  <td class="residual-neg">-22.6pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$-37</td>
+</tr>
+<tr>
+  <td><b>Bryce Elder</b></td>
+  <td>1-1</td>
+  <td>50.0%</td>
+  <td>60.8%</td>
+  <td class="residual-neg">-10.8pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$-31</td>
+</tr>
+<tr>
+  <td><b>Connelly Early</b></td>
+  <td>1-1</td>
+  <td>50.0%</td>
+  <td>74.2%</td>
+  <td class="residual-neg">-24.2pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$-50</td>
+</tr>
+<tr>
+  <td><b>Shane McClanahan</b></td>
+  <td>1-1</td>
+  <td>50.0%</td>
+  <td>54.2%</td>
+  <td class="residual-flat">-4.2pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$+5</td>
+</tr>
+<tr>
+  <td><b>Tarik Skubal</b></td>
+  <td>1-1</td>
+  <td>50.0%</td>
+  <td>81.9%</td>
+  <td class="residual-neg">-31.9pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$+25</td>
+</tr>
+<tr>
+  <td><b>Jesus Luzardo</b></td>
+  <td>1-1</td>
+  <td>50.0%</td>
+  <td>72.7%</td>
+  <td class="residual-neg">-22.7pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$-35</td>
+</tr>
+<tr>
+  <td><b>Eduardo Rodriguez</b></td>
+  <td>0-2</td>
+  <td>0.0%</td>
+  <td>72.4%</td>
+  <td class="residual-neg">-72.4pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$-200</td>
+</tr>
+<tr>
+  <td><b>Spencer Strider</b></td>
+  <td>0-2</td>
+  <td>0.0%</td>
+  <td>62.9%</td>
+  <td class="residual-neg">-62.9pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$-200</td>
+</tr>
+<tr>
+  <td><b>Landen Roupp</b></td>
+  <td>0-4</td>
+  <td>0.0%</td>
+  <td>56.4%</td>
+  <td class="residual-neg">-56.4pp</td>
+  <td class="tier-low">Moderate (3-4)</td>
+  <td>$-400</td>
+</tr>
+<tr>
+  <td><b>Eury PÃ©rez</b></td>
+  <td>0-2</td>
+  <td>0.0%</td>
+  <td>64.7%</td>
+  <td class="residual-neg">-64.7pp</td>
+  <td class="tier-low">Exploratory (1-2)</td>
+  <td>$-200</td>
+</tr>
+<tr>
+  <td><b>Jake Irvin</b></td>
+  <td>0-5</td>
+  <td>0.0%</td>
+  <td>70.2%</td>
+  <td class="residual-neg">-70.2pp</td>
+  <td class="tier-mid">Strong (5-7)</td>
+  <td>$-500</td>
+</tr>
+</tbody></table></div>
+
+<h2>Archetype Bucket Baselines (where the Expected WR comes from)</h2>
+<div class="block">
+<table>
+<thead><tr>
+  <th>Market</th><th>Side</th><th>Opp Archetype</th>
+  <th>W-L</th><th>N</th><th>Baseline WR</th>
+</tr></thead><tbody>
+
+<tr>
+  <td>hits</td>
+  <td>over</td>
+  <td>Edge Exploiter</td>
+  <td>38-21</td>
+  <td>59</td>
+  <td>64.4%</td>
+</tr>
+<tr>
+  <td>hits</td>
+  <td>over</td>
+  <td>Passive Taker</td>
+  <td>31-25</td>
+  <td>56</td>
+  <td>55.4%</td>
+</tr>
+<tr>
+  <td>strikeouts</td>
+  <td>under</td>
+  <td>Passive Taker</td>
+  <td>33-8</td>
+  <td>41</td>
+  <td>80.5%</td>
+</tr>
+<tr>
+  <td>hits</td>
+  <td>over</td>
+  <td>Unknown</td>
+  <td>22-12</td>
+  <td>34</td>
+  <td>64.7%</td>
+</tr>
+<tr>
+  <td>strikeouts</td>
+  <td>under</td>
+  <td>Edge Exploiter</td>
+  <td>17-11</td>
+  <td>28</td>
+  <td>60.7%</td>
+</tr>
+<tr>
+  <td>walks</td>
+  <td>under</td>
+  <td>Edge Exploiter</td>
+  <td>16-8</td>
+  <td>24</td>
+  <td>66.7%</td>
+</tr>
+<tr>
+  <td>walks</td>
+  <td>under</td>
+  <td>Passive Taker</td>
+  <td>13-11</td>
+  <td>24</td>
+  <td>54.2%</td>
+</tr>
+<tr>
+  <td>strikeouts</td>
+  <td>under</td>
+  <td>Unknown</td>
+  <td>13-7</td>
+  <td>20</td>
+  <td>65.0%</td>
+</tr>
+<tr>
+  <td>hits</td>
+  <td>under</td>
+  <td>Passive Taker</td>
+  <td>7-7</td>
+  <td>14</td>
+  <td>50.0%</td>
+</tr>
+<tr>
+  <td>hits</td>
+  <td>under</td>
+  <td>Edge Exploiter</td>
+  <td>12-1</td>
+  <td>13</td>
+  <td>92.3%</td>
+</tr>
+<tr>
+  <td>walks</td>
+  <td>under</td>
+  <td>Unknown</td>
+  <td>10-2</td>
+  <td>12</td>
+  <td>83.3%</td>
+</tr>
+<tr>
+  <td>hits</td>
+  <td>under</td>
+  <td>Unknown</td>
+  <td>8-3</td>
+  <td>11</td>
+  <td>72.7%</td>
+</tr>
+<tr>
+  <td>strikeouts</td>
+  <td>over</td>
+  <td>Passive Taker</td>
+  <td>6-2</td>
+  <td>8</td>
+  <td>75.0%</td>
+</tr>
+<tr>
+  <td>hits</td>
+  <td>over</td>
+  <td>Patient Hunter</td>
+  <td>4-3</td>
+  <td>7</td>
+  <td>57.1%</td>
+</tr>
+<tr>
+  <td>strikeouts</td>
+  <td>over</td>
+  <td>Edge Exploiter</td>
+  <td>6-0</td>
+  <td>6</td>
+  <td>100.0%</td>
+</tr>
+<tr>
+  <td>strikeouts</td>
+  <td>under</td>
+  <td>Patient Hunter</td>
+  <td>5-1</td>
+  <td>6</td>
+  <td>83.3%</td>
+</tr>
+<tr>
+  <td>strikeouts</td>
+  <td>over</td>
+  <td>Unknown</td>
+  <td>3-3</td>
+  <td>6</td>
+  <td>50.0%</td>
+</tr>
+<tr>
+  <td>hits</td>
+  <td>over</td>
+  <td>Contact Converter</td>
+  <td>4-1</td>
+  <td>5</td>
+  <td>80.0%</td>
+</tr>
+<tr>
+  <td>strikeouts</td>
+  <td>under</td>
+  <td>Contact Converter</td>
+  <td>4-1</td>
+  <td>5</td>
+  <td>80.0%</td>
+</tr>
+<tr>
+  <td>hits</td>
+  <td>under</td>
+  <td>Patient Hunter</td>
+  <td>1-3</td>
+  <td>4</td>
+  <td>25.0%</td>
+</tr>
+<tr>
+  <td>walks</td>
+  <td>over</td>
+  <td>Unknown</td>
+  <td>2-1</td>
+  <td>3</td>
+  <td>66.7%</td>
+</tr>
+</tbody></table></div>
+</body></html>
